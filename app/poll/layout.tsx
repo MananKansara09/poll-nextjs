@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Toaster } from "@/components/ui/sonner";
 import { Badge } from "@/components/ui/badge";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -223,6 +224,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <Toaster />
         </div>
       </body>
     </html>

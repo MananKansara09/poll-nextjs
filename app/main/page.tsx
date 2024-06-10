@@ -26,11 +26,11 @@ export default function Home() {
     getPoll();
   }, []);
 
-  const handleShare = (pollId) => {
+  const handleShare = (pollId: string) => {
     const shareData = {
       title: "Check out this poll",
       text: "I found this interesting poll on our platform. Have a look!",
-      url: `https://yourplatform.com/poll/${pollId}`,
+      url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/poll/${pollId}`,
     };
 
     try {

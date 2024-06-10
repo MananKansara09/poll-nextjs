@@ -4,7 +4,25 @@ const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
 });
 
-// apiClient.interceptors.response.use(())
+apiClient.interceptors.response.use(
+  (response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    return response;
+  },
+  (error) => {
+    console.log(error)
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    const status = error.response ? error.response.status : null;
+    if (status && status !== 200) {
+      toast.error(
+        `Request failed with status code ${status} : ${error.response.data.message}`
+      );
+    } else {
+      toast.error("An unexpected error occurred");
+    }
+    return Promise.reject(error);
+  }
+);
 
 const getRequest = async (path) => {
   const USER_TOKEN = localStorage.getItem("accessToken");
