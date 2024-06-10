@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [poll, setPoll] = useState([]);
-  const user = useStore((state) => state);
+  const user:any = useStore((state) => state);
 
   async function getPoll() {
     const poll = await user.getAllpoll();
@@ -73,7 +73,7 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {poll?.map((data, index) => (
+                {poll?.map((data:any, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{data?.question}</TableCell>

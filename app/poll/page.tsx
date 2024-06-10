@@ -26,17 +26,17 @@ export default function Poll() {
     ]);
   };
 
-  const handleRemoveOption = (index) => {
+  const handleRemoveOption = (index:any) => {
     if (options.length > 1) {
       setOptions([...options.slice(0, index), ...options.slice(index + 1)]);
     }
   };
 
-  const handleChangeQuestion = (e) => {
+  const handleChangeQuestion = (e:any) => {
     setFormData({ ...formData, question: e.target.value });
   };
 
-  const handleOptionChange = (index, value) => {
+  const handleOptionChange = (index:any, value:any) => {
     const newOptions = [...options];
     newOptions[index].text = value;
     setOptions(newOptions);

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useStore } from "@/store";
 import * as z from "zod";
 import { toast } from "sonner";
+
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
@@ -27,6 +28,20 @@ export default function Account() {
   const updateDetails = useStore((state: any) => state.updateUser);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [image, setImage] = useState("");
+
+  // Ensure userDetails is properly initialized
+  const [initializedUserDetails, setInitializedUserDetails] = useState<any>({
+    email: "",
+    profileImage: null,
+    username: "User", // Default username in case it's null
+  });
+
+  useEffect(() => {
+    if (userDetails) {
+      setInitializedUserDetails(userDetails);
+    }
+  }, [userDetails]);
+
   const {
     control,
     register,
@@ -35,13 +50,13 @@ export default function Account() {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: userDetails.email || "",
-      profileImage: userDetails.profileImage || null,
+      email: initializedUserDetails.email || "",
+      profileImage: initializedUserDetails.profileImage || null,
     },
   });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file: File = e.target.files && e.target.files[0];
+    const file: any = e.target.files && e.target.files[0];
     setImage(file);
     if (file) {
       const reader = new FileReader();
@@ -63,20 +78,24 @@ export default function Account() {
     toast(updatedData.message);
   };
 
+  if (!initializedUserDetails) {
+    return <div>Loading...</div>; // Render a loading state if userDetails is not ready
+  }
+
   return (
     <Card className="w-full max-w-[850px]">
       <CardHeader>
         <CardTitle>Account settings</CardTitle>
-        <CardDescription>Used to Update Your account settin</CardDescription>
+        <CardDescription>Used to Update Your account settings</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">
             <Avatar>
-              {userDetails.profileImage ? ( // Display avatar preview if available
+              {initializedUserDetails.profileImage ? ( // Display avatar preview if available
                 !avatarPreview ? (
                   <AvatarImage
-                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${userDetails.profileImage}`}
+                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${initializedUserDetails.profileImage}`}
                   />
                 ) : (
                   <AvatarImage src={avatarPreview} />
@@ -84,7 +103,7 @@ export default function Account() {
               ) : (
                 <>
                   <AvatarFallback>
-                    {userDetails.username.slice(0, 4)}
+                    {initializedUserDetails.username.slice(0, 4)}
                   </AvatarFallback>
                   <span>Select an image</span>
                 </>
@@ -100,7 +119,7 @@ export default function Account() {
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                placeholder="Enter emails"
+                placeholder="Enter email"
                 {...register("email")}
               />
               {errors.email && (

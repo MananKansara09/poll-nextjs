@@ -3,7 +3,7 @@ interface pollPayload {
   Question: String;
   Options: Array<String>;
 }
-const pollCreation = async (payload: pollPayload) => {
+const pollCreation = async (payload: any) => {
   return await postRequest("/polls", payload);
 };
 

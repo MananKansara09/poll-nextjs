@@ -17,33 +17,31 @@ import { addComment, pollresponse } from "@/service/poll/index";
 import { toast } from "sonner";
 
 export default function Poll() {
-  const user = useStore((state) => state.users);
-  const params = useParams();
-  const [poll, setPoll] = useState({ question: "", options: [], comments: [] });
+  const user = useStore((state: any) => state.users);
+  const params:any = useParams();
+  const [poll, setPoll]:any = useState({ question: "", options: [], comments: [] });
   const [newComment, setNewComment] = useState("");
 
-  async function getPollData(id) {
+  async function getPollData(id: string) {
     const res = await pollById(id);
     setPoll(res.data.data);
   }
 
-  async function handleAddComment(pollId: String) {
+  async function handleAddComment(pollId: any) {
     const res = await addComment(pollId, { text: newComment });
     if (res.status === 200) {
       toast(res.data.message);
       getPollData(params.id);
-      setNewComment('')
+      setNewComment("");
     }
   }
 
-  async function handlepoll(pollId, id) {
+  async function handlepoll(pollId: any, id: any) {
     const res = await pollresponse(pollId, { optionId: id });
-   
+
     if (res.status === 200) {
-    
       toast(res.data.message);
       getPollData(params.id);
-      
     }
   }
 
@@ -64,19 +62,22 @@ export default function Poll() {
       <CardContent>
         <CardTitle>{poll.question}</CardTitle>
         <CardDescription>
-          {poll.options.map((option, index) => {
+          {poll.options.map((option: any, index:any) => {
             return (
               <Button
                 key={index}
                 className="mt-2 mr-1"
                 variant={
-                  option?.responses?.filter((obj) => obj?._id === user?._id) > 0
-                    ? "solid"
+                  option?.responses?.filter(
+                    (obj: any) => obj?._id === user?._id
+                  ) > 0
+                    ? "default"
                     : "outline"
                 }
                 disabled={
-                  option?.responses?.filter((obj) => obj?._id === user?._id)
-                    .length > 0
+                  option?.responses?.filter(
+                    (obj: any) => obj?._id === user?._id
+                  ).length > 0
                     ? true
                     : false
                 }
@@ -90,13 +91,13 @@ export default function Poll() {
         <CardDescription className="mt-4">
           <CardTitle>Comments</CardTitle>
           <div className="comments-container h-48 overflow-y-auto">
-            {poll.comments.map((comment, index) => {
+            {poll.comments.map((comment:any, index:any) => {
               return (
                 <div key={index} className="mt-2">
                   <div className="font-bold">{comment.user.email}</div>
                   <div>{comment.text}</div>
                   <div className="text-xs text-gray-500">
-                    {comment.createdAt.split('T')[0]}
+                    {comment.createdAt.split("T")[0]}
                   </div>
                 </div>
               );

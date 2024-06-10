@@ -24,7 +24,7 @@ apiClient.interceptors.response.use(
   }
 );
 
-const getRequest = async (path) => {
+const getRequest = async (path:any) => {
   const USER_TOKEN = localStorage.getItem("accessToken");
   const AXIOS_CONFIG = {
     headers: {
@@ -35,7 +35,7 @@ const getRequest = async (path) => {
   return await apiClient.get(path, AXIOS_CONFIG);
 };
 
-const postRequest = async (path, payload) => {
+const postRequest = async (path:any, payload:any) => {
   const USER_TOKEN = localStorage.getItem("accessToken");
   const AXIOS_CONFIG = {
     headers: {
@@ -46,7 +46,7 @@ const postRequest = async (path, payload) => {
   return await apiClient.post(path, payload, AXIOS_CONFIG);
 };
 
-const postRequestWithOutToken = async (path, payload) => {
+const postRequestWithOutToken = async (path:any, payload:any) => {
   const AXIOS_CONFIG = {
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -55,7 +55,7 @@ const postRequestWithOutToken = async (path, payload) => {
   return await apiClient.post(path, payload, AXIOS_CONFIG);
 };
 
-const putRequest = async (path, payload) => {
+const putRequest = async (path:any, payload:any) => {
   const USER_TOKEN = localStorage.getItem("accessToken");
   const AXIOS_CONFIG = {
     headers: {
